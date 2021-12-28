@@ -57,6 +57,14 @@ app.use(express.json());
 //
 app.post('/create', async (req, res) => {
   const { username, password } = req.body;
+  const user = await User.findOne({ username }).exec();
+  if (user) {
+    res.status(500);
+    res.json({
+      message: 'Username already exists',
+    });
+    return;
+  }
   await User.create({ username, password });
   res.json({
     message: 'Successfully created!!',
