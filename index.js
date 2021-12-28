@@ -103,6 +103,24 @@ app.post('/login', async (req, res) => {
   });
 });
 
+app.get('/todos', async (req, res) => {
+  const { authorization } = req.headers;
+  const [, token] = authorization.split(' ');
+  const [username, password] = token.split(':');
+  const user = await User.findOne({ username }).exec();
+
+  if (!user || user.password !== password) {
+    res.status(403);
+    res.json({
+      message: 'Invalid access',
+    });
+    return;
+  }
+  const { todo } = await Todo.findOne({ userId: user._id }).exec();
+  console.log(todo);
+  res.json(todo);
+});
+
 app.post('/todos', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');
