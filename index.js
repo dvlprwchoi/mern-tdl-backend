@@ -54,6 +54,7 @@ const User = mongoose.model('User', userSchema);
 
 // Todo Schema
 const todoSchema = new mongoose.Schema({
+  userId: String,
   todo: [
     {
       checked: Boolean,
@@ -102,7 +103,31 @@ app.post('/login', async (req, res) => {
   });
 });
 
-app.post('/todos', async (req, res) => {});
+app.post('/todos', async (req, res) => {
+  const { authorization } = req.headers;
+  const [, token] = authorization.split(' ');
+  const [username, password] = token.split(':');
+  const todoItem = req.body;
+  const user = await User.findOne({ username }).exec();
+  if (!user || user.password !== password) {
+    res.status(403);
+    res.json({
+      message: 'Invalid access',
+    });
+    return;
+  }
+  const todo = await Todo.findOne({ userId: user._id }).exec();
+  if (!todo) {
+    await Todo.create({
+      userId: user._id,
+      todo: todoItem,
+    });
+  } else {
+    todo.todo = todoItem;
+    await todo.save();
+  }
+  res.json(todoItem);
+});
 
 //=============================================================================
 // START SERVER
