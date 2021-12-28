@@ -40,6 +40,14 @@ async function main() {
   await mongoose.connect(MONGODB_URL);
 }
 
+// Schema
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+});
+
+const User = mongoose.model('User', userSchema);
+
 //=============================================================================
 // Middleware
 //=============================================================================
@@ -47,11 +55,11 @@ app.use(cors());
 app.use(express.json());
 
 //
-app.post('/create', (req, res) => {
+app.post('/create', async (req, res) => {
   const { username, password } = req.body;
+  await User.create({ username, password });
   res.json({
-    username,
-    password,
+    message: 'Successfully created!!',
   });
   //   res.send('Created!!');
 });
