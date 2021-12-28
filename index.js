@@ -40,13 +40,28 @@ async function main() {
   await mongoose.connect(MONGODB_URL);
 }
 
+//=============================================================================
 // Schema
+//=============================================================================
+
+// User Schema
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
 });
 
 const User = mongoose.model('User', userSchema);
+
+// Todo Schema
+const todoSchema = new mongoose.Schema({
+  todo: [
+    {
+      checked: Boolean,
+      text: String,
+    },
+  ],
+});
+const Todo = mongoose.model('Todo', todoSchema);
 
 //=============================================================================
 // Middleware
@@ -86,6 +101,8 @@ app.post('/login', async (req, res) => {
     message: 'Successfully loged in!!',
   });
 });
+
+app.post('/todos', async (req, res) => {});
 
 //=============================================================================
 // START SERVER
