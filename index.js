@@ -11,6 +11,10 @@ mongoose.connect(MONGODB_URL);
 
 app.use(cors());
 
+app.post('/create', (req, res) => {
+  res.send('Created!!');
+});
+
 app.listen(PORT, () => {
   console.log(`✅!!!SERVER IS RUNNING ON PORT:${PORT}!!!✅`);
 });
