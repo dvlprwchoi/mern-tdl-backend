@@ -12,7 +12,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 // Mongo URL and Connection
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const MONGODB_URL = process.env.DATABASE_URL;
 // const db = mongoose.connection;
 
@@ -67,11 +67,7 @@ const Todo = mongoose.model('Todo', todoSchema);
 //=============================================================================
 // Middleware
 //=============================================================================
-app.use(
-  cors({
-    origin: 'https://woosik-mern-tdl.netlify.app',
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 //
