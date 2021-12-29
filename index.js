@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 
 // Mongo URL and Connection
 const PORT = process.env.PORT;
-const MONGODB_URL = process.env.MONGODB_URL;
+const MONGODB_URL = process.env.DATABASE_URL;
 // const db = mongoose.connection;
 
 // Connect to Mongo
