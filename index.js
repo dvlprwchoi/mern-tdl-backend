@@ -67,7 +67,11 @@ const Todo = mongoose.model('Todo', todoSchema);
 //=============================================================================
 // Middleware
 //=============================================================================
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://woosik-mern-tdl.netlify.app',
+  })
+);
 app.use(express.json());
 
 //
